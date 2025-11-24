@@ -20,8 +20,8 @@ def generate_x_b3_traceid(len=16):
         x_b3_traceid += "abcdef0123456789"[math.floor(16 * random.random())]
     return x_b3_traceid
 
-def generate_xs_xs_common(a1, api, data=''):
-    ret = js.call('get_request_headers_params', api, data, a1)
+def generate_xs_xs_common(a1, api, data='', method='POST'):
+    ret = js.call('get_request_headers_params', api, data, a1, method)
     xs, xt, xs_common = ret['xs'], ret['xt'], ret['xs_common']
     return xs, xt, xs_common
 
@@ -75,8 +75,8 @@ def get_request_headers_template():
         "x-xray-traceid": generate_xray_traceid()
     }
 
-def generate_headers(a1, api, data=''):
-    xs, xt, xs_common = generate_xs_xs_common(a1, api, data)
+def generate_headers(a1, api, data='', method='POST'):
+    xs, xt, xs_common = generate_xs_xs_common(a1, api, data, method)
     x_b3_traceid = generate_x_b3_traceid()
     headers = get_request_headers_template()
     headers['x-s'] = xs
@@ -87,10 +87,10 @@ def generate_headers(a1, api, data=''):
         data = json.dumps(data, separators=(',', ':'), ensure_ascii=False)
     return headers, data
 
-def generate_request_params(cookies_str, api, data=''):
+def generate_request_params(cookies_str, api, data='', method='POST'):
     cookies = trans_cookies(cookies_str)
     a1 = cookies['a1']
-    headers, data = generate_headers(a1, api, data)
+    headers, data = generate_headers(a1, api, data, method)
     return headers, cookies, data
 
 def splice_str(api, params):

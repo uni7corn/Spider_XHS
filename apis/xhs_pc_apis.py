@@ -22,7 +22,7 @@ class XHS_Apis():
         res_json = None
         try:
             api = "/api/sns/web/v1/homefeed/category"
-            headers, cookies, data = generate_request_params(cookies_str, api)
+            headers, cookies, data = generate_request_params(cookies_str, api, '', 'GET')
             response = requests.get(self.base_url + api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -62,7 +62,7 @@ class XHS_Apis():
                 ],
                 "need_filter_image": False
             }
-            headers, cookies, trans_data = generate_request_params(cookies_str, api, data)
+            headers, cookies, trans_data = generate_request_params(cookies_str, api, data, 'POST')
             response = requests.post(self.base_url + api, headers=headers, data=trans_data, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -116,7 +116,7 @@ class XHS_Apis():
                 "target_user_id": user_id
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -134,7 +134,7 @@ class XHS_Apis():
         res_json = None
         try:
             api = f"/api/sns/web/v1/user/selfinfo"
-            headers, cookies, data = generate_request_params(cookies_str, api)
+            headers, cookies, data = generate_request_params(cookies_str, api, '', 'GET')
             response = requests.get(self.base_url + api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -153,7 +153,7 @@ class XHS_Apis():
         res_json = None
         try:
             api = f"/api/sns/web/v2/user/me"
-            headers, cookies, data = generate_request_params(cookies_str, api)
+            headers, cookies, data = generate_request_params(cookies_str, api, '', 'GET')
             response = requests.get(self.base_url + api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -182,7 +182,7 @@ class XHS_Apis():
                 "xsec_source": xsec_source,
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -245,7 +245,7 @@ class XHS_Apis():
                 "xsec_source": xsec_source,
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -308,7 +308,7 @@ class XHS_Apis():
                 "xsec_source": xsec_source,
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -379,7 +379,7 @@ class XHS_Apis():
                 "xsec_source": kvDist['xsec_source'] if 'xsec_source' in kvDist else "pc_search",
                 "xsec_token": kvDist['xsec_token']
             }
-            headers, cookies, data = generate_request_params(cookies_str, api, data)
+            headers, cookies, data = generate_request_params(cookies_str, api, data, 'POST')
             response = requests.post(self.base_url + api, headers=headers, data=data, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -403,7 +403,7 @@ class XHS_Apis():
                 "keyword": urllib.parse.quote(word)
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -510,7 +510,7 @@ class XHS_Apis():
                     "avif"
                 ]
             }
-            headers, cookies, data = generate_request_params(cookies_str, api, data)
+            headers, cookies, data = generate_request_params(cookies_str, api, data, 'POST')
             response = requests.post(self.base_url + api, headers=headers, data=data.encode('utf-8'), cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -575,7 +575,7 @@ class XHS_Apis():
                     "request_id": "22471139-1723999898524"
                 }
             }
-            headers, cookies, data = generate_request_params(cookies_str, api, data)
+            headers, cookies, data = generate_request_params(cookies_str, api, data, 'POST')
             response = requests.post(self.base_url + api, headers=headers, data=data.encode('utf-8'), cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -632,7 +632,7 @@ class XHS_Apis():
                 "xsec_token": xsec_token
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -689,7 +689,7 @@ class XHS_Apis():
                 "xsec_token": xsec_token
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -762,7 +762,7 @@ class XHS_Apis():
         res_json = None
         try:
             api = "/api/sns/web/unread_count"
-            headers, cookies, data = generate_request_params(cookies_str, api)
+            headers, cookies, data = generate_request_params(cookies_str, api, '', 'GET')
             response = requests.get(self.base_url + api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -786,7 +786,7 @@ class XHS_Apis():
                 "cursor": cursor
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -836,7 +836,7 @@ class XHS_Apis():
                 "cursor": cursor
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
@@ -886,7 +886,7 @@ class XHS_Apis():
                 "cursor": cursor
             }
             splice_api = splice_str(api, params)
-            headers, cookies, data = generate_request_params(cookies_str, splice_api)
+            headers, cookies, data = generate_request_params(cookies_str, splice_api, '', 'GET')
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
