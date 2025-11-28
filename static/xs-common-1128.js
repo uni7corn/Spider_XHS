@@ -240,8 +240,6 @@ Document.prototype.cookie = 'abRequestId=77e39326-85d4-52fe-bfa7-574c973e32de; w
 function HTMLDocument(){}
 Object.setPrototypeOf(HTMLDocument.prototype, Document.prototype)
 document = new HTMLDocument()
-
-// 新增：补全 querySelector 方法 此处为关键环境，如果没有这里 补出的sign在未编码前为201 补完后为301才可以使用
 Document.prototype.querySelector = function querySelector(selector) {
     if (selector === 'body' || selector === '*') {
         return document.body;
@@ -249,7 +247,6 @@ Document.prototype.querySelector = function querySelector(selector) {
     return null;
 };
 safeFunction(Document.prototype.querySelector);  // 应用 safeFunction 以伪装 native
-
 // safeFunction(HTMLDocument)
 // obj_toString(document, 'HTMLDocument')
 // document = watch(document, "document");
@@ -336,7 +333,7 @@ window.Screen = Screen;
 
 
 
-
+//第一个js var code = ...
 var _0x5e26 = ['1OWxddp', 'UMGUw', 'PqfSQ', 'bAFBA', 'RdZOW', 'VTKBBQFM', 'zxdmC', 'tmPwM', 'wiumi', 'ΙIΙ', 'MhWZS', 'setPrototypeOf', 'PyUdY', 'MjAjc', 'xPcsI', 'EJjtF', 'HGVol', 'yxiaz', 'prototype', 'OBxQX', 'apply', 'cXDFm', '[object\x20Arguments]', 'BqDfU', 'IIΙ', 'HaYEx', 'XVDwO', 'jqHEd', 'eJIqr', 'BmFKC', 'vFVcP', 'length', 'rUBOo', 'kouSN', 'IVyLJ', 'UgkRn', '231578RZAPRo', 'iJhUX', 'slice', 'PWtFM', 'HkaBE', 'tYXYt', '321249iOnvFh', 'GADdy', 'IUXjo', 'AbRVN', 'Hcklz', 'hwjfK', 'kmriT', 'uMRFn', 'rttQd', '__bc', 'XxNlA', 'kqKnQ', 'mQhYz', 'sWKCl', 'construct', '260713ggTmlX', 'BYbSM', '3icXZpW', 'mZrHM', 'ZYFsA', 'ZQUMb', 'YtJvW', 'yuUMe', 'euoqz', 'jHwuh', 'CciCu', 'bind', 'JOCDJ', 'gqOZZ', 'IΙI', 'TNifp', 'CozeT', 'sham', 'SMVQv', 'ksZAC', '258308ThHaAN', 'qDuah', 'XBnTt', 'LzUba', '746795dpceNN', 'POWBq', 'Pwrup', 'BdEvR', 'fromCharCode', 'juZTe', 'iGuJR', 'bPojh', 'keys', 'lzlIX', 'yZBVv', 'yOsHa', 'err-209e10:\x20+\x20', 'QiARX', 'ABRVQ', 'xRIOr', 'XDOoR', 'oRfag', 'undefined', '1QZcWJQ', 'FdcjM', 'PczfC', 'ΙII', 'uixXY', 'ahwRp', 'SOoBb', 'RMSgu', 'hJTjo', 'yrDYx', 'dxzss', 'qfwSc', 'idiYu', 'DlfXv', 'UwVWk', 'PdbAc', 'push', 'gZeSF', 'nWekH', 'Kbhwt', 'ndGnJ', 'kPvxn', '121585KCTaKM', 'comGc', 'wnbho', 'QBTLS', 'NOFBb', 'SAYoa', 'XDLWq', 'cFexY', 'SygNu', 'function', 'HTOjf', 'hOwmN', 'EGbYA', 'suYWh', 'vvqfG', 'EJPiB', 'uCThz', 'FSTxk', 'Awtlv', 'XLyDS', 'qskTK', 'ZqAbc', 'PzXQN', 'sGqQS', 'JsjPA', 'tLDgE', 'QqSfw', 'xMjZi', 'Tthhs', 'IΙΙ', '742454TyjCbv', 'zmfqy', 'WLUSP', 'yrZuT', 'call', 'toString'];
 var _0x4a41 = function(_0x1218b5, _0x5e2612) {
     _0x1218b5 = _0x1218b5 - 0x0;
@@ -1704,6 +1701,7 @@ glb['c93b4da3'] = function(_0x24c604, _0x6a35ed, _0x22f624) {
 }
 ;
 
+//第二个js  var data = ...
 var _0x5479 = ['_f523010cd8cf5fb75250d1fc2f671c73', 'push', 'EhLkd', '_2b3beb7962f7014c81b260f8aa1890be', 'tFBhT', 'length', '112237xHQyuJ', '8LIglkV', 'Invalid\x20code\x20point:\x20', '_575364e3fbdd1929a75a10a5118cc687', 'FMtAg', 'dCVzD', 'nHBiG', '5ekKZPb', 'XADBI', '184993ShoWTj', 'byRPx', 'zwMfF', '756117jhUodH', '1sUsefP', 'iacYd', '1138479XrELIw', '1087901hELCjO', 'fromCharCode', 'DOGdJ', '_972e441617b5152eab406b3c2c8e25ff', '835795CfxVfq', '706685rELxlJ', 'sVNOf', 'XolAc', 'UzJLB'];
 var _0x55e4 = function(_0x5a83dc, _0x547951) {
     _0x5a83dc = _0x5a83dc - 0x0;
@@ -1902,6 +1900,7 @@ var __$c = '56544b424251464d001f320474df1decedf402a0000000000002ed4c22000011001c
 globalThis['c93b4da3'](__$c, [, , typeof Object !== "undefined" ? Object : undefined, typeof Reflect !== "undefined" ? Reflect : undefined, typeof String !== "undefined" ? String : undefined, typeof Array !== "undefined" ? Array : undefined, typeof setTimeout !== "undefined" ? setTimeout : undefined, typeof Promise !== "undefined" ? Promise : undefined, typeof Date !== "undefined" ? Date : undefined, typeof globalThis !== "undefined" ? globalThis : undefined, typeof clearTimeout !== "undefined" ? clearTimeout : undefined, typeof performance !== "undefined" ? performance : undefined, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : undefined, typeof requestIdleCallback !== "undefined" ? requestIdleCallback : undefined, typeof Math !== "undefined" ? Math : undefined, typeof undefined !== "undefined" ? undefined : undefined, typeof encodeURIComponent !== "undefined" ? encodeURIComponent : undefined, typeof TextEncoder !== "undefined" ? TextEncoder : undefined, typeof RegExp !== "undefined" ? RegExp : undefined, typeof document !== "undefined" ? document : undefined, typeof unescape !== "undefined" ? unescape : undefined, typeof parseInt !== "undefined" ? parseInt : undefined, typeof navigator !== "undefined" ? navigator : undefined, typeof InstallTrigger !== "undefined" ? InstallTrigger : undefined, typeof Set !== "undefined" ? Set : undefined, typeof Function !== "undefined" ? Function : undefined, typeof XMLHttpRequest !== "undefined" ? XMLHttpRequest : undefined, typeof JSON !== "undefined" ? JSON : undefined, typeof Error !== "undefined" ? Error : undefined, typeof chrome !== "undefined" ? chrome : undefined, typeof Event !== "undefined" ? Event : undefined, typeof top !== "undefined" ? top : undefined, typeof Uint8Array !== "undefined" ? Uint8Array : undefined])
 
 
+//第三个js 关键js name = ds.js 补全后201-> 301
 var _0x3a22 = ['[object\x20Arguments]', 'GLTAH', '226141eCbzqA', 'cOYuu', 'NOHrN', 'Canuu', 'efpQO', '513SYklrn', 'EOKVU', 'JaUbk', 'fnjdC', 'slice', 'IKpsn', 'vcBXl', 'call', 'err-209e10:\x20+\x20', 'wdlvM', 'pcUqF', 'rGyjf', 'length', 'OdsAi', '127kujLHU', 'BbxwK', 'akvab', 'miIwf', 'iterator', 'wfnus', 'kralx', '65249crRajW', 'nNQWE', 'qcpgy', 'Drxjm', 'rtsin', 'CHjWv', 'NIHkN', 'nwcoI', 'YqRyS', 'VGVAs', 'FekMc', 'ymAYe', 'vQJod', 'haIvy', 'eYYaN', 'rrWTd', 'IrQiv', 'xpwej', 'aRHQi', 'ItxRM', 'function', 'prototype', 'ZxMML', 'bKQRx', '2qPKyas', 'XpFEi', 'DmJcg', 'VTKBBQFM', 'omMSr', 'haYIW', 'MMQQL', 'uGtEe', 'NWkTP', 'GOhyq', 'xAKIg', 'uOKAa', 'bind', 'EMjRQ', 'OBTTG', 'BDynx', 'dfOBX', 'qxpIg', 'ETEse', 'uDQbt', 'TSKsT', 'GmmYl', 'JjpuD', 'IIrsk', '3ISkdSX', 'mAwMQ', 'NVcWk', 'sABHz', 'pZdSz', 'cHsQI', 'sham', 'SdMMn', 'edzdk', 'Invalid\x20attempt\x20to\x20spread\x20non-iterable\x20instance', 'Edysw', 'hAspT', 'AhGvb', 'construct', 'Lccwa', 'TwSMi', 'UQLlH', 'push', 'IΙΙ', 'ZHorf', 'JBlhR', 'ΙIΙ', 'kNgPG', 'rlSTo', '9160otfvXv', 'DTGBN', 'dOCSb', 'fAlwo', 'KkFMt', '17467wCxwPO', 'MWCEm', 'ooJvt', 'Ondtl', 'yHtWF', 'oXjSh', 'OkoLJ', '__proto__', 'ORXub', 'GFyNZ', 'whcQp', 'IIΙ', 'iAJuQ', 'TFiOj', 'caGtG', 'iGRkZ', 'aZVbd', 'pbsdA', 'RabMP', 'TxRhg', 'tkoTH', 'IwCWr', 'SqHkF', '13EBogcr', 'setPrototypeOf', 'DieVN', '__bc', 'VUUJM', 'KdOHh', 'htAmd', 'vcVNt', 'jDeAS', 'dcWSA', 'DhuYw', 'gbMpH', 'JEbLY', 'mqQzl', 'gftCH', 'eeQya', 'QNhsm', 'GSzrc', 'iKntE', 'fHdAm', 'MCjGc', 'jretz', 'aGRRq', 'cChCd', 'KtTAk', 'dZjXG', 'epQzr', 'FpFKZ', 'yMDnc', 'ZDeiG', 'fHbNk', 'SeGjj', 'xHQQS', 'veDpj', 'xbSHX', 'aZcNn', 'AyJxJ', 'xGFAl', 'fromCharCode', 'RrkOu', 'vFVCI', 'XMvmB', 'rNxjj', 'deFkL', 'apply', 'keys', 'tEgYt', 'ygiMT', 'undefined', 'BdCgY', 'jQZVf', '46nKhPif', 'gVrhb', 'wtton', 'ΙII', 'Grqmu', 'IΙI', '1873QobJer', '_gQzt9pYeL7Vw5', 'nDVEx', 'JWpXw', '7963UdtbCZ', 'Grjaj', 'YAKgW', 'toString', 'RPXpq', 'owMbq', '10223CrbEoU', 'xMxUd'];
 var _0x25db = function(_0x3b7967, _0x3a2230) {
     _0x3b7967 = _0x3b7967 - 0x0;
