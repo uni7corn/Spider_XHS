@@ -160,7 +160,7 @@ function buildPayload(dHex, a1, appId, content) {
 }
 // 从 login.js 引入的 seccore_signv2 函数
 const CryptoJs = require("crypto-js");
-require('./static/xs-common-1128.js');
+require(__dirname + '/static/xs-common-1128.js');
 
 function seccore_signv2(e, a) {
   let d = CryptoJs.MD5(e).toString();
