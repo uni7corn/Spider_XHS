@@ -14,25 +14,29 @@ const CONFIG = {
     "ZmserbBoHQtNP+wOcza/LpngG8yJq42KWYj0DSfdikx3VT16IlUAFM97hECvuRX5",
   STANDARD_BASE64_ALPHABET:
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+  X3_BASE64_ALPHABET:
+    "MfgqrsbcyzPQRStuvC7mn501HIJBo2DEFTKdeNOwxWXYZap89+/A4UVLhijkl63G",
   HEX_KEY:
-    "af572b95ca65b2d9ec76bb5d2e97cb653299cc663399cc663399cce673399cce6733190c06030100000000008040209048241289c4e271381c0e0703018040a05028148ac56231180c0683c16030984c2693c964b259ac56abd5eaf5fafd7e3f9f4f279349a4d2e9743a9d4e279349a4d2e9f47a3d1e8f47239148a4d269341a8d4623110884422190c86432994ca6d3e974baddee773b1d8e47a35128148ac5623198cce6f3f97c3e1f8f47a3d168b45aad562b158ac5e2f1f87c3e9f4f279349a4d269b45aad56",
+    "71a302257793271ddd273bcee3e4b98d9d7935e1da33f5765e2ea8afb6dc77a51a499d23b67c20660025860cbf13d4540d92497f58686c574e508f46e1956344f39139bf4faf22a3eef120b79258145b2feb5193b6478669961298e79bedca646e1a693a926154a5a7a1bd1cf0dedb742f917a747a1e388b234f2277",
   VERSION_BYTES: [119, 104, 96, 41],
-  TIMESTAMP_XOR_KEY: 41,
-  FIXED_INT_VALUE_1: 15,
-  FIXED_INT_VALUE_2: 1291,
-  STARTUP_TIME_OFFSET_MIN: 1000,
-  STARTUP_TIME_OFFSET_MAX: 4000,
-  ENV_STATIC_BYTES: [
-    1, 249, 83, 102, 103, 201, 181, 131, 99, 94, 7, 68, 250, 132, 21,
-  ],
-  X3_PREFIX: "mns0101_",
+  ENV_FINGERPRINT_XOR_KEY: 41,
+  SEQUENCE_VALUE_MIN: 15,
+  SEQUENCE_VALUE_MAX: 50,
+  WINDOW_PROPS_LENGTH_MIN: 900,
+  WINDOW_PROPS_LENGTH_MAX: 1200,
+  CHECKSUM_VERSION: 1,
+  CHECKSUM_XOR_KEY: 115,
+  CHECKSUM_FIXED_TAIL: [249, 65, 103, 103, 201, 181, 131, 99, 94, 7, 68, 250, 132, 21],
+  ENV_FINGERPRINT_TIME_OFFSET_MIN: 10,
+  ENV_FINGERPRINT_TIME_OFFSET_MAX: 50,
+  X3_PREFIX: "mns0301_",
   XYS_PREFIX: "XYS_",
   TEMPLATE: {
     x0: "4.2.6",
     x1: "xhs-pc-web",
     x2: "Windows",
     x3: "",
-    x4: "object",
+    x4: "",
   },
 };
 
@@ -62,30 +66,17 @@ const HEX_KEY_BYTES = bytesFromHex(CONFIG.HEX_KEY);
 function xorArray(arr) {
   return arr.map((b, i) => (b ^ HEX_KEY_BYTES[i]) & 0xff);
 }
-function encodeTimestamp(ts) {
-  const raw = intToLE(ts, 8);
-  return raw
-    .map((b, i) => (b ^ CONFIG.TIMESTAMP_XOR_KEY) & 0xff)
-    .map((b, i) => (i === 0 ? randByte(0, 255) : b));
-}
-function base58Encode(bytes) {
-  let zeros = 0;
-  for (const b of bytes) {
-    if (b === 0) zeros++;
-    else break;
+
+function encodeX3(bytes) {
+  const std = Buffer.from(bytes).toString("base64");
+  let out = "";
+  const SA = CONFIG.STANDARD_BASE64_ALPHABET,
+    CA = CONFIG.X3_BASE64_ALPHABET;
+  for (const ch of std) {
+    const idx = SA.indexOf(ch);
+    out += idx !== -1 ? CA[idx] : ch;
   }
-  let num = 0n;
-  for (const b of bytes) num = num * 256n + BigInt(b);
-  const chars = [];
-  const A = CONFIG.BASE58_ALPHABET;
-  while (num > 0n) {
-    const div = num / 58n;
-    const rem = num % 58n;
-    chars.push(A[Number(rem)]);
-    num = div;
-  }
-  for (let i = 0; i < zeros; i++) chars.push(A[0]);
-  return chars.reverse().join("");
+  return out;
 }
 function b64CustomEncode(s) {
   const std = Buffer.from(s, "utf-8").toString("base64");
@@ -124,57 +115,95 @@ function buildContentString(method, uri, payload) {
 function md5Hex(s) {
   return crypto.createHash("md5").update(s, "utf8").digest("hex");
 }
+function structPackLittleEndianQ(ts) {
+  const data = new Array(8).fill(0);
+  for (let i = 0; i < 8; i++) {
+    data[i] = ts & 0xFF;
+    ts = Math.floor(ts / 256);
+  }
+  return data;
+}
+
+function envFingerprintA(ts, xorKey) {
+  const data = structPackLittleEndianQ(ts);
+  
+  const sum1 = data[1] + data[2] + data[3] + data[4];
+  const sum2 = data[5] + data[6] + data[7];
+  
+  const mark = ((sum1 & 0xFF) + sum2) & 0xFF;
+  data[0] = mark;
+  
+  for (let i = 0; i < data.length; i++) {
+    data[i] ^= xorKey;
+  }
+  
+  return data;
+}
+
+function envFingerprintB(ts) {
+  return structPackLittleEndianQ(ts);
+}
+
 function buildPayload(dHex, a1, appId, content) {
-  const randNum = rand32();
-  const ts = Date.now();
-  const startupTs =
-    ts -
-    (CONFIG.STARTUP_TIME_OFFSET_MIN +
-      randByte(
-        0,
-        CONFIG.STARTUP_TIME_OFFSET_MAX - CONFIG.STARTUP_TIME_OFFSET_MIN
-      ));
-  const arr = [];
-  arr.push(...CONFIG.VERSION_BYTES);
-  const randBytes = intToLE(randNum, 4);
-  arr.push(...randBytes);
-  const xorKey = randBytes[0];
-  arr.push(...encodeTimestamp(ts));
-  arr.push(...intToLE(startupTs, 8));
-  arr.push(...intToLE(CONFIG.FIXED_INT_VALUE_1));
-  arr.push(...intToLE(CONFIG.FIXED_INT_VALUE_2));
-  const strLen = Buffer.from(content, "utf-8").length;
-  arr.push(...intToLE(strLen));
-  const md5Bytes = bytesFromHex(dHex);
-  arr.push(...md5Bytes.slice(0, 8).map((b) => b ^ xorKey));
-  const a1Buf = Buffer.from(a1, "utf-8");
-  arr.push(a1Buf.length, ...a1Buf);
-  const appBuf = Buffer.from(appId, "utf-8");
-  arr.push(appBuf.length, ...appBuf);
-  arr.push(
-    CONFIG.ENV_STATIC_BYTES[0],
-    randByte(0, 255),
-    ...CONFIG.ENV_STATIC_BYTES.slice(1)
+  const payload = [];
+  
+  payload.push(...CONFIG.VERSION_BYTES);
+  
+  const seed = rand32();
+  const seedBytes = intToLE(seed, 4);
+  payload.push(...seedBytes);
+  const seedByte0 = seedBytes[0];
+  
+  const timestamp = Date.now();
+  payload.push(...envFingerprintA(timestamp, CONFIG.ENV_FINGERPRINT_XOR_KEY));
+  
+  const timeOffset = randByte(
+    CONFIG.ENV_FINGERPRINT_TIME_OFFSET_MIN,
+    CONFIG.ENV_FINGERPRINT_TIME_OFFSET_MAX
   );
-  return arr;
+  payload.push(...envFingerprintB(timestamp - timeOffset));
+  
+  const sequenceValue = randByte(
+    CONFIG.SEQUENCE_VALUE_MIN,
+    CONFIG.SEQUENCE_VALUE_MAX
+  );
+  payload.push(...intToLE(sequenceValue, 4));
+  
+  const windowPropsLength = randByte(
+    CONFIG.WINDOW_PROPS_LENGTH_MIN,
+    CONFIG.WINDOW_PROPS_LENGTH_MAX
+  );
+  payload.push(...intToLE(windowPropsLength, 4));
+  
+  const uriLength = Buffer.from(content, "utf-8").length;
+  payload.push(...intToLE(uriLength, 4));
+  
+  const md5Bytes = bytesFromHex(dHex);
+  for (let i = 0; i < 8; i++) {
+    payload.push(md5Bytes[i] ^ seedByte0);
+  }
+  
+  payload.push(52);
+  
+  const a1Bytes = Buffer.from(a1, "utf-8");
+  const paddedA1 = Buffer.alloc(52);
+  a1Bytes.copy(paddedA1, 0, 0, Math.min(a1Bytes.length, 52));
+  payload.push(...Array.from(paddedA1));
+  
+  payload.push(10);
+  
+  const sourceBytes = Buffer.from(appId, "utf-8");
+  const paddedSource = Buffer.alloc(10);
+  sourceBytes.copy(paddedSource, 0, 0, Math.min(sourceBytes.length, 10));
+  payload.push(...Array.from(paddedSource));
+  
+  payload.push(1);
+  payload.push(CONFIG.CHECKSUM_VERSION);
+  payload.push(seedByte0 ^ CONFIG.CHECKSUM_XOR_KEY);
+  payload.push(...CONFIG.CHECKSUM_FIXED_TAIL);
+  
+  return payload;
 }
-// 从 login.js 引入的 seccore_signv2 函数
-const CryptoJs = require("crypto-js");
-require(__dirname + '/static/xs-common-1128.js');
-
-function seccore_signv2(e, a) {
-  let d = CryptoJs.MD5(e).toString();
-  let s = window.mnsv2(e, d);
-  let f = {
-    x0: "4.2.6",
-    x1: "xhs-pc-web",
-    x2: "Windows",
-    x3: s,
-    x4: a ? (typeof a === "undefined" ? "undefined" : typeof a) : ""
-  };
-  return "XYS_" + b64Encode(encodeUtf8(JSON.stringify(f)));
-}
-
 function signXs(
   method,
   uri,
@@ -184,8 +213,19 @@ function signXs(
 ) {
   method = method.toUpperCase();
   const content = buildContentString(method, uri, payload);
-  // 调用 seccore_signv2，第二个参数传空字符串
-  return seccore_signv2(content, "");
+  const dVal = md5Hex(content);
+  const payloadArr = buildPayload(
+    dVal,
+    a1Value.trim(),
+    xsecAppid.trim(),
+    content
+  );
+  const xorBytes = xorArray(payloadArr);
+  const x3Body = encodeX3(xorBytes.slice(0, 124));
+  const x3Full = CONFIG.X3_PREFIX + x3Body;
+  const jsonCompact = JSON.stringify({ ...CONFIG.TEMPLATE, x3: x3Full });
+  const encoded = b64CustomEncode(jsonCompact);
+  return CONFIG.XYS_PREFIX + encoded;
 }
 for (
   var c = [],
