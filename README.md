@@ -30,7 +30,7 @@
 
 <div align="center">
 
-[![FastAIToken](https://github.com/TheSmallHanCat/flow2api/blob/main/static/sponsors/fastaitoken-banner.png)](https://www.fastaitoken.com/register)
+[![FastAIToken](https://github.com/TheSmallHanCat/flow2api/blob/main/static/sponsors/fastaitoken-banner.png)](https://www.fastaitoken.com/register?aff=48J4VXUABAAV)
 
 </div>
 
@@ -38,7 +38,7 @@
 
 平台提供多个可选分组与公开状态页，开发者可根据成本、响应速度和稳定性自由选择不同渠道，并享受 **7×24 小时真人技术支持**（非机器人）。
 
-**主要做 AI 开发接入？可以试试 [FastAIToken](https://www.fastaitoken.com/register)，兼容 Codex / Claude Code / Gemini CLI 等主流工具。**
+**主要做 AI 开发接入？可以试试 [FastAIToken](https://www.fastaitoken.com/register?aff=48J4VXUABAAV)，兼容 Codex / Claude Code / Gemini CLI 等主流工具。**
 
 
 ---
