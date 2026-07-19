@@ -23,11 +23,25 @@
 
 ## ❤️Sponsor
 
-> [Want to appear here?](mailto:992822653@qq.com)
+> [想出现在这里？](mailto:992822653@qq.com)
 
 <details open>
-<summary>Click to collapse</summary>
+<summary>点击折叠</summary>
 
+<div align="center">
+
+[![FastAIToken](https://github.com/TheSmallHanCat/flow2api/blob/main/static/sponsors/fastaitoken-banner.png)](https://www.fastaitoken.com/register)
+
+</div>
+
+**FastAIToken** 是面向开发者的 AI API 聚合平台，支持 OpenAI、Claude、Gemini 等主流大模型，兼容 OpenAI API 协议，可无缝接入 **Claude Code、Codex、Gemini CLI、Cherry Studio、Cline、Continue** 等各类 AI 开发工具。平台采用 **充值 1:1（1 元 = 1 美元 API 额度）**，帮助开发者以更低成本、更高效率地使用全球领先的大模型服务。
+
+平台提供多个可选分组与公开状态页，开发者可根据成本、响应速度和稳定性自由选择不同渠道，并享受 **7×24 小时真人技术支持**（非机器人）。
+
+**主要做 AI 开发接入？可以试试 [FastAIToken](https://www.fastaitoken.com/register)，兼容 Codex / Claude Code / Gemini CLI 等主流工具。**
+
+
+---
 
 <table>
 <tr>
